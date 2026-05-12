@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chirapun Mailiang — Brand & Digital Marketing</title>
+
+  <!-- Fonts: Bebas Neue (heavy display) + Cormorant Garamond (italic contrast) + DM Sans (body) + Space Mono (labels) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@1,300;1,500&family=DM+Sans:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ══════════════════════════════════════════
+       DESIGN TOKENS — Neo-Brutalist Editorial
+    ══════════════════════════════════════════ */
+    :root {
+      --lime:       #C8FF00;   /* electric lime — primary accent */
+      --black:      #080808;
+      --black2:     #111111;
+      --gray:       #1A1A1A;
+      --gray2:      #222222;
+      --white:      #F5F5F0;
+      --off:        #E8E8E2;
+      --muted:      #777770;
+
+      --font-hvy:    'Bebas Neue', sans-serif;
+      --font-it:     'Cormorant Garamond', serif;
+      --font-body:   'DM Sans', sans-serif;
+      --font-mono:   'Space Mono', monospace;
+
+      --ease-snap:   cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    /* ══════════════════════════════════════════
+       RESET
+    ══════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--black); color: var(--white);
+      font-family: var(--font-body); font-weight: 300;
+      line-height: 1.6; overflow-x: hidden; cursor: none;
+    }
+    ::selection { background: var(--lime); color: var(--black); }
+    a { color: inherit; text-decoration: none; }
+
+    /* ══════════════════════════════════════════
+       CUSTOM CURSOR
+    ══════════════════════════════════════════ */
+    #cur  { position:fixed; width:10px; height:10px; background:var(--lime); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:width .2s,height .2s,border-radius .2s; mix-blend-mode:difference; }
+    #curt { position:fixed; width:38px; height:38px; border:1.5px solid rgba(200,255,0,.4); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:width .28s var(--ease-snap),height .28s var(--ease-snap),border-color .2s; }
+    body.hov #cur  { width:20px; height:20px; border-radius:3px; }
+    body.hov #curt { width:58px; height:58px; border-color:var(--lime); }
+
+    /* ══════════════════════════════════════════
+       PROGRESS
+    ══════════════════════════════════════════ */
+    #prog { position:fixed; top:0; left:0; height:3px; background:var(--lime); z-index:9997; width:0%; transition:width .05s; }
+
+    /* ══════════════════════════════════════════
+       NAV
+    ══════════════════════════════════════════ */
+    nav {
+      position:fixed; top:0; left:0; right:0; z-index:100;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:1.2rem clamp(1.5rem,5vw,4rem);
+      background:rgba(8,8,8,.93); backdrop-filter:blur(18px);
+      border-bottom:1px solid transparent; transition:border-color .3s;
+    }
+    nav.sc { border-bottom-color:rgba(200,255,0,.12); }
+    .nl { font-family:var(--font-hvy); font-size:1.7rem; letter-spacing:.06em; }
+    .nl span { color:var(--lime); }
+    .nv { display:flex; gap:2.5rem; list-style:none; }
+    .nv a { font-family:var(--font-mono); font-size:.6rem; letter-spacing:.22em; text-transform:uppercase; color:var(--muted); transition:color .2s; }
+    .nv a:hover { color:var(--lime); }
+    .nb { font-family:var(--font-mono); font-size:.62rem; letter-spacing:.18em; text-transform:uppercase; padding:.65rem 1.5rem; background:var(--lime); color:var(--black); font-weight:700; transition:.2s; }
+    .nb:hover { background:#deff33; }
+    .hbg { display:none; flex-direction:column; gap:5px; cursor:none; }
+    .hbg span { display:block; width:22px; height:2px; background:var(--white); }
+
+    /* ══════════════════════════════════════════
+       UTIL
+    ══════════════════════════════════════════ */
+    .wrap { max-width:1200px; margin:0 auto; padding:0 clamp(1.5rem,5vw,4rem); }
+    .sl { display:inline-flex; align-items:center; gap:.7rem; font-family:var(--font-mono); font-size:.6rem; letter-spacing:.22em; text-transform:uppercase; color:var(--lime); margin-bottom:1rem; }
+    .sl::before { content:''; display:block; width:24px; height:2px; background:var(--lime); }
+    .sh { font-family:var(--font-hvy); font-size:clamp(3rem,6vw,6.5rem); line-height:.9; letter-spacing:.02em; }
+    .sit { font-family:var(--font-it); font-style:italic; }
+
+    /* ══════════════════════════════════════════
+       REVEAL
+    ══════════════════════════════════════════ */
+    .rv { opacity:0; transform:translateY(30px); transition:opacity .75s var(--ease-snap), transform .75s var(--ease-snap); }
+    .rv.on { opacity:1; transform:none; }
+    .d1{transition-delay:.1s} .d2{transition-delay:.2s} .d3{transition-delay:.3s} .d4{transition-delay:.4s}
+
+    /* ══════════════════════════════════════════
+       MARQUEE
+    ══════════════════════════════════════════ */
+    .mqs { width:100%; overflow:hidden; background:var(--lime); padding:.8rem 0; }
+    .mqs.dk { background:var(--black2); border-top:1px solid rgba(200,255,0,.08); border-bottom:1px solid rgba(200,255,0,.08); }
+    .mqw { display:flex; animation:mq 24s linear infinite; white-space:nowrap; }
+    .mqs.rv2 .mqw { animation-direction:reverse; }
+    .mqi { display:inline-flex; align-items:center; gap:1.5rem; font-family:var(--font-hvy); font-size:1rem; letter-spacing:.12em; color:var(--black); padding:0 2.5rem; }
+    .mqs.dk .mqi { color:var(--lime); }
+    .mqd { width:7px; height:7px; border-radius:50%; background:var(--black); flex-shrink:0; }
+    .mqs.dk .mqd { background:var(--lime); }
+    @keyframes mq { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    /* ══════════════════════════════════════════
+       HERO
+    ══════════════════════════════════════════ */
+    #hero {
+      display:grid; grid-template-columns:1fr 1fr;
+      min-height:100vh; overflow:hidden;
+    }
+    /* LEFT */
+    .hl {
+      display:flex; flex-direction:column; justify-content:flex-end;
+      padding:9rem clamp(1.5rem,4vw,4rem) clamp(3rem,5vw,5rem) clamp(1.5rem,5vw,4rem);
+      background:var(--black); position:relative; z-index:2;
+    }
+    .he {
+      font-family:var(--font-mono); font-size:.62rem; letter-spacing:.28em; text-transform:uppercase; color:var(--lime);
+      margin-bottom:1.4rem; opacity:0; animation:fdu .8s var(--ease-snap) .2s forwards;
+    }
+    .hn {
+      font-family:var(--font-hvy); font-size:clamp(4.5rem,8.5vw,10rem); line-height:.88; letter-spacing:.02em;
+    }
+    .hn .ln { overflow:hidden; display:block; }
+    .hn .ln span { display:block; opacity:0; transform:translateY(105%); animation:slu .9s var(--ease-snap) forwards; }
+    .hn .ln:nth-child(1) span { animation-delay:.3s; }
+    .hn .ln:nth-child(2) span { animation-delay:.45s; }
+    .hs { font-family:var(--font-it); font-style:italic; font-size:clamp(1.5rem,2.8vw,2.4rem); font-weight:300; color:var(--lime); margin:.2em 0 1.8rem; opacity:0; animation:fdu .8s var(--ease-snap) .65s forwards; }
+    .hd { font-size:.9rem; color:rgba(245,245,240,.48); line-height:1.88; max-width:400px; margin-bottom:2.5rem; opacity:0; animation:fdu .8s var(--ease-snap) .8s forwards; }
+    .hac { display:flex; gap:1rem; flex-wrap:wrap; opacity:0; animation:fdu .8s var(--ease-snap) .95s forwards; }
+
+    /* RIGHT — lime graphic panel */
+    .hr {
+      background:var(--lime); display:flex; flex-direction:column; justify-content:flex-end;
+      padding:9rem 3rem 3rem; position:relative; overflow:hidden;
+    }
+    .hbg-txt {
+      position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+      font-family:var(--font-hvy); font-size:clamp(12rem,22vw,22rem);
+      color:rgba(8,8,8,.06); letter-spacing:.05em; pointer-events:none; white-space:nowrap;
+    }
+    .hrl {
+      font-family:var(--font-hvy); font-size:clamp(5rem,11vw,14rem);
+      line-height:.82; color:var(--black); letter-spacing:-.02em; position:relative; z-index:1;
+      opacity:0; animation:fdi 1s var(--ease-snap) .5s forwards;
+    }
+    .hrl .it { font-family:var(--font-it); font-style:italic; font-size:.52em; color:rgba(8,8,8,.45); display:block; margin-bottom:-.1em; }
+    .hss {
+      display:grid; grid-template-columns:repeat(4,1fr);
+      margin-top:2.5rem; border-top:2px solid rgba(8,8,8,.12); position:relative; z-index:1;
+    }
+    .hsi { padding:1.2rem .8rem 0; border-right:1px solid rgba(8,8,8,.1); }
+    .hsi:last-child { border-right:none; }
+    .hsin { font-family:var(--font-hvy); font-size:2.2rem; color:var(--black); line-height:1; }
+    .hsil { font-family:var(--font-mono); font-size:.55rem; letter-spacing:.15em; text-transform:uppercase; color:rgba(8,8,8,.5); margin-top:.25rem; }
+
+    /* BUTTONS */
+    .btn-l { font-family:var(--font-mono); font-size:.62rem; letter-spacing:.2em; text-transform:uppercase; padding:.95rem 2rem; background:var(--lime); color:var(--black); font-weight:700; display:inline-flex; align-items:center; gap:.5rem; transition:.25s var(--ease-snap); }
+    .btn-l:hover { background:#e0ff33; transform:translateY(-2px); }
+    .btn-o { font-family:var(--font-mono); font-size:.62rem; letter-spacing:.2em; text-transform:uppercase; padding:.95rem 2rem; border:1.5px solid rgba(245,245,240,.2); color:var(--white); display:inline-flex; align-items:center; gap:.5rem; transition:.25s var(--ease-snap); }
+    .btn-o:hover { border-color:var(--lime); color:var(--lime); transform:translateY(-2px); }
+
+    /* ══════════════════════════════════════════
+       ABOUT
+    ══════════════════════════════════════════ */
+    #about { padding:9rem 0; }
+    .ag { display:grid; grid-template-columns:1.1fr .9fr; gap:6rem; align-items:center; }
+    .ab { font-size:.92rem; color:rgba(245,245,240,.5); line-height:1.9; margin:1.5rem 0 2rem; }
+    .ab strong { color:var(--white); font-weight:500; }
+    .tgs { display:flex; flex-wrap:wrap; gap:.5rem; margin-top:1.8rem; }
+    .tg { padding:.32rem .85rem; font-family:var(--font-mono); font-size:.58rem; letter-spacing:.14em; text-transform:uppercase; border:1.5px solid rgba(200,255,0,.3); color:var(--lime); background:rgba(200,255,0,.04); transition:.2s; }
+    .tg:hover { background:var(--lime); color:var(--black); }
+
+    /* info table */
+    .at { display:flex; flex-direction:column; }
+    .ar { display:flex; justify-content:space-between; align-items:baseline; padding:1.2rem 0; border-bottom:1px solid rgba(245,245,240,.06); }
+    .ar:first-child { border-top:1px solid rgba(245,245,240,.06); }
+    .ak { font-family:var(--font-mono); font-size:.58rem; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); }
+    .av { font-family:var(--font-hvy); font-size:1.05rem; letter-spacing:.04em; color:var(--white); text-align:right; }
+    .av.lm { color:var(--lime); }
+
+    /* ══════════════════════════════════════════
+       METRICS — lime band
+    ══════════════════════════════════════════ */
+    #metrics { background:var(--lime); }
+    .mi { display:grid; grid-template-columns:repeat(4,1fr); }
+    .mb { padding:3.5rem 2.5rem; border-right:1.5px solid rgba(8,8,8,.12); transition:background .2s; }
+    .mb:last-child { border-right:none; }
+    .mb:hover { background:rgba(8,8,8,.06); }
+    .mn { font-family:var(--font-hvy); font-size:4.5rem; color:var(--black); line-height:.9; }
+    .ms { font-size:2rem; vertical-align:super; }
+    .ml { font-family:var(--font-mono); font-size:.58rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(8,8,8,.5); margin-top:.6rem; }
+
+    /* ══════════════════════════════════════════
+       EXPERIENCE
+    ══════════════════════════════════════════ */
+    #experience { padding:9rem 0; background:var(--black2); }
+    .ext { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:5rem; gap:2rem; flex-wrap:wrap; }
+    .exct { font-family:var(--font-mono); font-size:.6rem; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); text-align:right; }
+
+    .tl { display:flex; flex-direction:column; }
+    .tr { display:grid; grid-template-columns:160px 1fr; gap:3rem; padding:3rem 0; border-top:1px solid rgba(245,245,240,.06); transition:background .25s; }
+    .tr:last-child { border-bottom:1px solid rgba(245,245,240,.06); }
+    .tr:hover { background:rgba(200,255,0,.02); }
+    .tr:hover .tln { color:var(--lime); }
+
+    .tlf { padding-top:.2rem; }
+    .tln { font-family:var(--font-hvy); font-size:3.5rem; color:rgba(245,245,240,.07); line-height:1; transition:color .3s; }
+    .tlp { font-family:var(--font-mono); font-size:.58rem; letter-spacing:.18em; text-transform:uppercase; color:var(--lime); margin-top:.3rem; }
+
+    .tbw { margin-bottom:.8rem; }
+    .tbg { display:inline-block; font-family:var(--font-mono); font-size:.56rem; letter-spacing:.16em; text-transform:uppercase; padding:.26rem .8rem; background:var(--lime); color:var(--black); font-weight:700; }
+    .tbg.ol { background:transparent; border:1px solid rgba(200,255,0,.3); color:var(--lime); }
+    .tro { font-family:var(--font-hvy); font-size:clamp(1.8rem,3vw,2.8rem); line-height:1; letter-spacing:.03em; margin-bottom:.4rem; }
+    .trd { font-size:.8rem; color:var(--muted); margin-bottom:1.4rem; }
+    .tbs { display:flex; flex-direction:column; gap:.6rem; }
+    .tb { display:flex; gap:.8rem; align-items:flex-start; font-size:.86rem; color:rgba(245,245,240,.42); line-height:1.65; }
+    .tb::before { content:'—'; color:var(--lime); flex-shrink:0; }
+    .tb strong { color:rgba(245,245,240,.78); font-weight:500; }
+
+    /* ══════════════════════════════════════════
+       CAMPAIGNS
+    ══════════════════════════════════════════ */
+    #campaigns { padding:9rem 0; }
+    .ct { display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:end; margin-bottom:5rem; }
+    .csub { font-size:.9rem; color:rgba(245,245,240,.42); line-height:1.85; }
+
+    .cg { display:grid; grid-template-columns:repeat(12,1fr); gap:1.5px; }
+    .cc {
+      position:relative; overflow:hidden; background:var(--gray); padding:2.5rem;
+      cursor:none; transition:transform .35s var(--ease-snap);
+    }
+    .cc:hover { transform:scale(1.012); z-index:2; }
+    .cc:hover .cca { transform:translate(4px,-4px); }
+    .cc::after { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:var(--lime); opacity:0; transition:opacity .3s; }
+    .cc:hover::after { opacity:1; }
+
+    .s4{grid-column:span 4} .s5{grid-column:span 5} .s6{grid-column:span 6}
+    .s7{grid-column:span 7} .s8{grid-column:span 8} .s12{grid-column:span 12}
+
+    .cc.lm { background:var(--lime); }
+    .cc.lm .ccp,.cc.lm .cct,.cc.lm .ccd { color:var(--black); }
+    .cc.lm .ccp { opacity:.6; }
+    .cc.lm .cctg { border-color:rgba(8,8,8,.2); color:rgba(8,8,8,.65); }
+    .cc.lm .cca { color:var(--black); }
+    .cc.lm::after { background:var(--black); }
+    .cc.lm .ccn { color:rgba(8,8,8,.06); }
+    .cc.dk { background:var(--black2); }
+
+    .ccn { position:absolute; bottom:-1rem; right:1rem; font-family:var(--font-hvy); font-size:9rem; color:rgba(245,245,240,.03); line-height:1; pointer-events:none; }
+    .ccp { font-family:var(--font-mono); font-size:.56rem; letter-spacing:.2em; text-transform:uppercase; color:var(--lime); margin-bottom:.7rem; }
+    .cct { font-family:var(--font-hvy); font-size:1.85rem; letter-spacing:.03em; line-height:1; margin-bottom:.8rem; color:var(--white); }
+    .ccd { font-size:.82rem; color:rgba(245,245,240,.38); line-height:1.75; margin-bottom:1.3rem; }
+    .cctgs { display:flex; flex-wrap:wrap; gap:.4rem; margin-bottom:1.2rem; }
+    .cctg { padding:.2rem .6rem; font-family:var(--font-mono); font-size:.54rem; letter-spacing:.12em; text-transform:uppercase; border:1px solid rgba(200,255,0,.2); color:rgba(200,255,0,.6); }
+    .ccm { font-family:var(--font-hvy); font-size:3.8rem; color:var(--lime); line-height:1; }
+    .cc.lm .ccm { color:var(--black); }
+    .ccml { font-family:var(--font-mono); font-size:.56rem; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); margin-top:.3rem; }
+    .cc.lm .ccml { color:rgba(8,8,8,.45); }
+    .cca { font-size:1rem; color:var(--lime); display:inline-block; transition:transform .25s var(--ease-snap); }
+
+    /* ══════════════════════════════════════════
+       SKILLS — white section
+    ══════════════════════════════════════════ */
+    #skills { padding:9rem 0; background:var(--off); }
+    #skills .sl { color:var(--black2); }
+    #skills .sl::before { background:var(--black2); }
+    #skills .sh { color:var(--black); }
+    #skills .sit { color:rgba(8,8,8,.45); }
+
+    .skg { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5px; margin-top:4rem; }
+    .skb { background:var(--white); padding:2.5rem; transition:background .25s,transform .25s var(--ease-snap); cursor:none; }
+    .skb:hover { background:var(--black); transform:translateY(-4px); }
+    .skb:hover .skn { color:var(--lime); }
+    .skb:hover .skd { color:rgba(245,245,240,.45); }
+    .skb:hover .skp { border-color:rgba(200,255,0,.25); color:rgba(200,255,0,.65); }
+    .skb:hover .ski { border-color:var(--lime); color:var(--lime); }
+
+    .ski { width:44px; height:44px; border:2px solid rgba(8,8,8,.2); display:flex; align-items:center; justify-content:center; font-size:1.1rem; margin-bottom:1.5rem; color:rgba(8,8,8,.5); transition:border-color .25s,color .25s; }
+    .skn { font-family:var(--font-hvy); font-size:1.45rem; letter-spacing:.03em; color:var(--black); margin-bottom:.6rem; transition:color .25s; }
+    .skd { font-size:.8rem; color:rgba(8,8,8,.48); line-height:1.75; margin-bottom:1.4rem; transition:color .25s; }
+    .skps { display:flex; flex-wrap:wrap; gap:.4rem; }
+    .skp { padding:.2rem .6rem; font-family:var(--font-mono); font-size:.54rem; letter-spacing:.12em; text-transform:uppercase; border:1px solid rgba(8,8,8,.15); color:rgba(8,8,8,.45); transition:border-color .25s,color .25s; }
+
+    /* ══════════════════════════════════════════
+       MARKETS
+    ══════════════════════════════════════════ */
+    #markets { padding:9rem 0; }
+    .mktg { display:grid; grid-template-columns:1fr 1fr; gap:7rem; align-items:center; margin-top:4rem; }
+    .mktl { display:flex; flex-direction:column; }
+    .mkti { display:grid; grid-template-columns:1fr auto auto; align-items:center; gap:1.5rem; padding:1.5rem 0; border-bottom:1px solid rgba(245,245,240,.06); }
+    .mkti:first-child { border-top:1px solid rgba(245,245,240,.06); }
+    .mktn { font-family:var(--font-hvy); font-size:2.2rem; letter-spacing:.03em; }
+    .mktbw { width:90px; height:3px; background:rgba(245,245,240,.08); overflow:hidden; }
+    .mktb { height:100%; background:var(--lime); transform:scaleX(0); transform-origin:left; transition:transform 1.2s var(--ease-snap); }
+    .mktb.go { transform:scaleX(1); }
+    .mktfl { font-size:1.5rem; }
+
+    .mktt .sh { margin-bottom:1.5rem; }
+    .mktt p { color:rgba(245,245,240,.42); line-height:1.85; margin-bottom:1rem; font-size:.9rem; }
+    .mktst {
+      display:inline-flex; align-items:center; justify-content:center;
+      width:120px; height:120px; border-radius:50%; background:var(--lime); color:var(--black);
+      font-family:var(--font-hvy); font-size:.95rem; letter-spacing:.08em; text-align:center; line-height:1.2;
+      margin-top:2rem; animation:sp 14s linear infinite;
+    }
+    @keyframes sp { to { transform:rotate(360deg); } }
+
+    /* ══════════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════════ */
+    footer { background:var(--lime); padding:5rem clamp(1.5rem,5vw,4rem) 3rem; }
+    .fi { max-width:1200px; margin:0 auto; }
+    .ft { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:4rem; flex-wrap:wrap; gap:3rem; }
+    .fn { font-family:var(--font-hvy); font-size:clamp(3.5rem,8vw,8rem); color:var(--black); line-height:.88; letter-spacing:.02em; }
+    .fn span { display:block; font-family:var(--font-it); font-style:italic; font-size:.52em; color:rgba(8,8,8,.45); }
+    .flinks { display:flex; flex-direction:column; gap:1rem; text-align:right; padding-top:.5rem; }
+    .flinks a { font-family:var(--font-mono); font-size:.62rem; letter-spacing:.18em; text-transform:uppercase; color:rgba(8,8,8,.55); transition:color .2s; }
+    .flinks a:hover { color:var(--black); }
+    .fb { display:flex; justify-content:space-between; align-items:center; border-top:1px solid rgba(8,8,8,.12); padding-top:2rem; flex-wrap:wrap; gap:1rem; }
+    .fc { font-family:var(--font-mono); font-size:.56rem; letter-spacing:.18em; text-transform:uppercase; color:rgba(8,8,8,.45); }
+    .fbd { font-family:var(--font-hvy); font-size:1.4rem; letter-spacing:.05em; color:var(--black); }
+
+    /* ══════════════════════════════════════════
+       KEYFRAMES
+    ══════════════════════════════════════════ */
+    @keyframes fdu { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:none} }
+    @keyframes slu { from{opacity:0;transform:translateY(105%)} to{opacity:1;transform:none} }
+    @keyframes fdi { from{opacity:0} to{opacity:1} }
+
+    /* ══════════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════════ */
+    @media(max-width:960px){
+      #hero{grid-template-columns:1fr;min-height:auto}
+      .hr{min-height:50vw}
+      .ag,.ct,.mktg{grid-template-columns:1fr;gap:3rem}
+      .mi{grid-template-columns:1fr 1fr}
+      .skg{grid-template-columns:1fr 1fr}
+      .tr{grid-template-columns:100px 1fr;gap:1.5rem}
+      .s4,.s5,.s6,.s7,.s8,.s12{grid-column:span 12}
+      .nv,.nb{display:none}
+      .hbg{display:flex}
+      .ext{flex-direction:column;align-items:flex-start}
+    }
+    @media(max-width:600px){
+      .mi{grid-template-columns:1fr 1fr}
+      .skg{grid-template-columns:1fr}
+      .tr{grid-template-columns:1fr}
+      .ft{flex-direction:column}
+      .flinks{text-align:left}
+      .fb{flex-direction:column;align-items:flex-start}
+    }
+    .nv.open{display:flex;flex-direction:column;position:fixed;inset:0;background:rgba(8,8,8,.98);align-items:center;justify-content:center;gap:2rem;z-index:90}
+    .nv.open a{font-size:.9rem;color:var(--white)}
+  </style>
+</head>
+<body>
+
+  <div id="cur"></div>
+  <div id="curt"></div>
+  <div id="prog"></div>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <div class="nl">PLAI<span>.</span></div>
+    <ul class="nv" id="nv">
+      <li><a href="#about">About</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#campaigns">Campaigns</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#markets">Markets</a></li>
+    </ul>
+    <a href="#campaigns" class="nb">View Work</a>
+    <div class="hbg" onclick="toggleNav()"><span></span><span></span><span></span></div>
+  </nav>
+
+  <!-- ═══ HERO ═══ -->
+  <section id="hero">
+    <div class="hl">
+      <p class="he">Brand &amp; Digital Marketing · SEA · ELLE</p>
+      <h1 class="hn">
+        <span class="ln"><span>CHIRAPUN</span></span>
+        <span class="ln"><span>MAILIANG</span></span>
+      </h1>
+      <p class="hs">Making brands<br/>impossible to ignore.</p>
+      <p class="hd">5 years building ELLE across Southeast Asia — multi-market campaigns, KOL ecosystems, luxury pop-ups, and digital commerce that move real numbers.</p>
+      <div class="hac">
+        <a href="#campaigns" class="btn-l">See Campaigns →</a>
+        <a href="#experience" class="btn-o">Career Path</a>
+      </div>
+    </div>
+    <div class="hr">
+      <div class="hbg-txt" aria-hidden="true">ELLE</div>
+      <div class="hrl">
+        <span class="it">five years of</span>
+        SEA<br/>BRAND
+      </div>
+      <div class="hss">
+        <div class="hsi"><div class="hsin"><span class="c" data-t="5">0</span>+</div><div class="hsil">Yrs ELLE</div></div>
+        <div class="hsi"><div class="hsin"><span class="c" data-t="5">0</span></div><div class="hsil">SEA Mkts</div></div>
+        <div class="hsi"><div class="hsin"><span class="c" data-t="132">0</span>%</div><div class="hsil">Revenue KPI</div></div>
+        <div class="hsi"><div class="hsin">+<span class="c" data-t="68">0</span>%</div><div class="hsil">E-com VN</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE 1 — lime -->
+  <div class="mqs" aria-hidden="true"><div class="mqw" id="mq1"></div></div>
+
+  <!-- ═══ ABOUT ═══ -->
+  <section id="about">
+    <div class="wrap">
+      <div class="ag">
+        <div class="rv">
+          <p class="sl">Profile</p>
+          <h2 class="sh">BRAND<br/>MIND.<br/><span class="sit">Creative soul.</span></h2>
+          <p class="ab">Joined Lagardere Active Enterprises in May 2020 as Marketing Executive — <strong>promoted to Assistant Marketing Manager SEA in 2025</strong>. Managing ELLE's brand presence across five Southeast Asian markets, connecting global brand strategy to locally resonant execution.</p>
+          <p class="ab">My work bridges <strong>editorial storytelling</strong>, digital performance, and offline experiential. I build KOL networks, pop-up experiences, e-commerce journeys, and brand consistency frameworks that licensees can actually deploy.</p>
+          <div class="tgs">
+            <span class="tg">Digital Marketing</span><span class="tg">KOL Strategy</span>
+            <span class="tg">Pop-up Activation</span><span class="tg">Brand Management</span>
+            <span class="tg">E-Commerce</span><span class="tg">Visual Merchandising</span>
+            <span class="tg">Social Media</span><span class="tg">GWP Strategy</span>
+            <span class="tg">Licensee Relations</span>
+          </div>
+        </div>
+        <div class="at rv d2">
+          <div class="ar"><span class="ak">Current Role</span><span class="av">Asst. Mktg Manager SEA</span></div>
+          <div class="ar"><span class="ak">Company</span><span class="av">Lagardere Active Ent.</span></div>
+          <div class="ar"><span class="ak">Brand</span><span class="av">ELLE (Asia Pacific)</span></div>
+          <div class="ar"><span class="ak">Joined</span><span class="av">25 May 2020</span></div>
+          <div class="ar"><span class="ak">Staff No.</span><span class="av">014</span></div>
+          <div class="ar"><span class="ak">Region</span><span class="av">TH / MY / ID / VN / SG</span></div>
+          <div class="ar"><span class="ak">2021 Overall Rating</span><span class="av lm">EXCEEDS EXPECTATIONS</span></div>
+          <div class="ar"><span class="ak">Appraiser 2024–25</span><span class="av">Marketing Manager SEA</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ METRICS — lime band ═══ -->
+  <section id="metrics">
+    <div class="wrap">
+      <div class="mi">
+        <div class="mb rv"><div class="mn"><span class="c2" data-t="132">0</span><span class="ms">%</span></div><div class="ml">2022 SEA Royalty KPI Achieved</div></div>
+        <div class="mb rv d1"><div class="mn">$<span class="c2" data-t="700">0</span><span class="ms">K+</span></div><div class="ml">SEA Royalty Revenue</div></div>
+        <div class="mb rv d2"><div class="mn">+<span class="c2" data-t="68">0</span><span class="ms">%</span></div><div class="ml">Vietnam E-commerce Growth</div></div>
+        <div class="mb rv d3"><div class="mn"><span class="c2" data-t="80">0</span><span class="ms">th</span></div><div class="ml">ELLE Anniversary Year 2025</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ EXPERIENCE ═══ -->
+  <section id="experience">
+    <div class="wrap">
+      <div class="ext rv">
+        <div>
+          <p class="sl">Career Path</p>
+          <h2 class="sh">5 YEARS.<br/><span class="sit">One brand.</span></h2>
+        </div>
+        <div class="exct">Lagardere Active Enterprises<br/>(Asia Pacific)</div>
+      </div>
+      <div class="tl">
+
+        <div class="tr rv">
+          <div class="tlf">
+            <div class="tln">01</div>
+            <div class="tlp">2025–Present</div>
+          </div>
+          <div>
+            <div class="tbw"><span class="tbg">↑ Promoted</span></div>
+            <div class="tro">ASST. MARKETING<br/>MANAGER SEA</div>
+            <div class="trd">Marketing Dept · ELLE Brand · SEA Region</div>
+            <div class="tbs">
+              <div class="tb">Led <strong>ELLE 80th Anniversary</strong> pop-up activations in Indonesia (SOGO Mall) &amp; Thailand — end-to-end: landlord coordination, local PR, KOL content optimization.</div>
+              <div class="tb">Developed &amp; executed <strong>regional marketing and digital content strategies</strong> for ELLE Boutique SEA (TH, MY, IND) — consistent brand positioning across all markets.</div>
+              <div class="tb">Managed <strong>monthly KOL product seeding programs</strong> in TH for ELLE Boutique &amp; ELLE Lingerie — KOL selection, content alignment, brand-safe communications.</div>
+              <div class="tb">Led coordination of monthly <strong>ELLE Magazine ad placements</strong> across SEA; collaborated on 80th Anniversary digital campaign with ELLE Magazine TH.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tr rv">
+          <div class="tlf">
+            <div class="tln">02</div>
+            <div class="tlp">2024</div>
+          </div>
+          <div>
+            <div class="tbw"><span class="tbg ol">Marketing Executive</span></div>
+            <div class="tro">MARKETING<br/>EXECUTIVE</div>
+            <div class="trd">Marketing Dept · ELLE Brand</div>
+            <div class="tbs">
+              <div class="tb">Launched <strong>ELLE x ELLE Magazine VN</strong> digital campaign — video production, KOL partnerships, brand awareness and sales impact integrated.</div>
+              <div class="tb">Managed social media for <strong>ELLE Boutique SEA (TH/MY/ID)</strong> — aligned execution with licensees across all markets, consistent brand identity.</div>
+              <div class="tb">Led <strong>ELLE BE Paris Pop-up (Indonesia)</strong> — landlord negotiation, global concept alignment, interactive CX, KOL amplification, custom GWP.</div>
+              <div class="tb">Coordinated <strong>SEA Retail Club Licensing Meeting</strong> — seamless event execution, global team integration, tailored guest gifting.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tr rv">
+          <div class="tlf">
+            <div class="tln">03</div>
+            <div class="tlp">2023</div>
+          </div>
+          <div>
+            <div class="tbw"><span class="tbg ol">Marketing Executive</span></div>
+            <div class="tro">MARKETING<br/>EXECUTIVE</div>
+            <div class="trd">Marketing Dept · ELLE Brand</div>
+            <div class="tbs">
+              <div class="tb">Managed KOL activation for <strong>ELLE x Gemalyn Launch Event (TH)</strong> — KOL recruitment, content monitoring, audience engagement optimization.</div>
+              <div class="tb">Full event management for <strong>ELLE Wonder Fair Pop-up (MY)</strong> — local KOL engagement, agency coordination, custom GWP execution.</div>
+              <div class="tb">Initiated &amp; executed <strong>ELLE Wonder GWP</strong> for SEA licensees; managed product seeding for ELLE Décor x SB Design Collection launch.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tr rv">
+          <div class="tlf">
+            <div class="tln">04</div>
+            <div class="tlp">May 2020–2022</div>
+          </div>
+          <div>
+            <div class="tbw"><span class="tbg ol">Joined</span></div>
+            <div class="tro">MARKETING<br/>EXECUTIVE</div>
+            <div class="trd">Marketing · Product Licensing · ELLE Brand</div>
+            <div class="tbs">
+              <div class="tb"><strong>132% of SEA Royalty Revenue target</strong> achieved in 2022 (~$700K) — strongest commercial result in the review period.</div>
+              <div class="tb"><strong>Colortherapy Campaign</strong> across TH, MY, SG, ID — regional offline reactivation post-COVID; KOL coordination for ELLE Décor x SB and Lotus launches.</div>
+              <div class="tb">Held online revenue to <strong>-2.1% ($827K vs $845K)</strong> while SEA e-commerce market contracted 20% — strong counter-market performance.</div>
+              <div class="tb"><strong>Vietnam e-commerce +68%</strong> — full online infrastructure: back-office system, POS, logistics, payment, warehouse integration.</div>
+              <div class="tb">Overall 2021 rating: <strong style="color:var(--lime)">EXCEEDS EXPECTATIONS</strong> — SEE on Work Attitude, Teamwork &amp; Discipline.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE 2 — dark -->
+  <div class="mqs dk rv2" aria-hidden="true"><div class="mqw" id="mq2"></div></div>
+
+  <!-- ═══ CAMPAIGNS ═══ -->
+  <section id="campaigns">
+    <div class="wrap">
+      <div class="ct">
+        <div class="rv">
+          <p class="sl">Selected Work</p>
+          <h2 class="sh">CAMPAIGN<br/><span class="sit">Highlights.</span></h2>
+        </div>
+        <p class="csub rv d1">From luxury pop-up activations to data-driven digital campaigns — the most impactful work across five years managing ELLE across Southeast Asia.</p>
+      </div>
+
+      <div class="cg">
+
+        <div class="cc s8 lm rv">
+          <div class="ccn">01</div>
+          <div class="ccp">2025 · Indonesia &amp; Thailand</div>
+          <div class="cct">ELLE 80TH ANNIVERSARY POP-UP</div>
+          <div class="ccd">Spearheaded ELLE's landmark anniversary pop-up at SOGO Mall Jakarta — full coordination from landlord negotiation to KOL content, local PR management, and GWP execution. Simultaneously supported Thailand activation with consistent brand alignment.</div>
+          <div class="cctgs"><span class="cctg">Experiential</span><span class="cctg">KOL</span><span class="cctg">Pop-up</span><span class="cctg">PR</span><span class="cctg">GWP</span></div>
+          <span class="cca">↗</span>
+        </div>
+
+        <div class="cc s4 rv d1">
+          <div class="ccn">02</div>
+          <div class="ccp">2021 · Vietnam</div>
+          <div class="cct">PANDEMOS E-COM SCALE-UP</div>
+          <div class="ccm">+68%</div>
+          <div class="ccml">E-commerce Growth</div>
+          <div class="ccd" style="margin-top:.8rem;font-size:.78rem;">Full infrastructure build: back-office, POS, logistics, payment, warehouse.</div>
+          <div class="cctgs"><span class="cctg">E-commerce</span><span class="cctg">Infrastructure</span></div>
+          <span class="cca">↗</span>
+        </div>
+
+        <div class="cc s4 dk rv">
+          <div class="ccn">03</div>
+          <div class="ccp">2022 · SEA Region</div>
+          <div class="cct">SEA ROYALTY REVENUE</div>
+          <div class="ccm">132%</div>
+          <div class="ccml">vs Target Achieved</div>
+          <div class="ccd" style="margin-top:.8rem;font-size:.78rem;">~$700K across Southeast Asia. Exceeded annual KPI target by 32%.</div>
+          <div class="cctgs"><span class="cctg">Revenue</span><span class="cctg">Commercial</span></div>
+          <span class="cca">↗</span>
+        </div>
+
+        <div class="cc s8 rv d1">
+          <div class="ccn">04</div>
+          <div class="ccp">2024 · Indonesia</div>
+          <div class="cct">ELLE BE PARIS POP-UP ACTIVATION</div>
+          <div class="ccd">Full coordination: landlord negotiation, licensee management, global concept alignment, interactive CX integration, KOL content amplification, and custom GWP — driving both footfall and in-store conversion.</div>
+          <div class="cctgs"><span class="cctg">Pop-up</span><span class="cctg">Retail CX</span><span class="cctg">KOL</span><span class="cctg">GWP</span><span class="cctg">Indonesia</span></div>
+          <span class="cca">↗</span>
+        </div>
+
+        <div class="cc s6 rv">
+          <div class="ccn">05</div>
+          <div class="ccp">2022 · TH / MY / SG / ID</div>
+          <div class="cct">WELCOME BACK OFFLINE: COLORTHERAPY</div>
+          <div class="ccd">Post-COVID regional offline reactivation across four markets. KOL coordination for ELLE Décor x SB, Topking event, Lotus 1st counter at Central Ladphrao, and TDST popup at Pavillion KLCC / Luxasia at Sogo.</div>
+          <div class="cctgs"><span class="cctg">Offline</span><span class="cctg">Multi-market</span><span class="cctg">KOL</span><span class="cctg">Brand Reactivation</span></div>
+          <span class="cca">↗</span>
+        </div>
+
+        <div class="cc s6 lm rv d1">
+          <div class="ccn">06</div>
+          <div class="ccp">2024 · Vietnam</div>
+          <div class="cct">ELLE x ELLE MAGAZINE VN CAMPAIGN</div>
+          <div class="ccd">Collaborative brand campaign with ELLE Magazine Vietnam — video production, KOL partnerships, and social commerce converged into one unified commercial narrative.</div>
+          <div class="cctgs"><span class="cctg">Digital</span><span class="cctg">Video</span><span class="cctg">KOL</span><span class="cctg">Editorial</span></div>
+          <span class="cca">↗</span>
+        </div>
+
+        <div class="cc s4 rv">
+          <div class="ccn">07</div>
+          <div class="ccp">2023 · Malaysia</div>
+          <div class="cct">ELLE WONDER FAIR POP-UP</div>
+          <div class="ccd">Full event management: KOL engagement, agency coordination, custom GWP — driving footfall, dwell time, and brand affinity.</div>
+          <div class="cctgs"><span class="cctg">Pop-up</span><span class="cctg">Malaysia</span></div>
+          <span class="cca">↗</span>
+        </div>
+
+        <div class="cc s4 rv d1">
+          <div class="ccn">08</div>
+          <div class="ccp">2023–24 · SEA</div>
+          <div class="cct">SEA RETAIL CLUB LICENSING MTG</div>
+          <div class="ccd">Co-created display designs with local agency; brand-aligned product display; tailored guest gifting; smooth global team integration.</div>
+          <div class="cctgs"><span class="cctg">B2B</span><span class="cctg">Retail</span></div>
+          <span class="cca">↗</span>
+        </div>
+
+        <div class="cc s4 rv d2">
+          <div class="ccn">09</div>
+          <div class="ccp">2023 · Thailand</div>
+          <div class="cct">ELLE x GEMALYN NEW LAUNCH</div>
+          <div class="ccd">KOL recruitment, content monitoring, and engagement optimization for ELLE x Gemalyn product launch — maximizing audience reach at launch.</div>
+          <div class="cctgs"><span class="cctg">Launch</span><span class="cctg">KOL</span></div>
+          <span class="cca">↗</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SKILLS — white ═══ -->
+  <section id="skills">
+    <div class="wrap">
+      <p class="sl rv">Capabilities</p>
+      <h2 class="sh rv" style="color:var(--black)">CORE <span class="sit" style="color:rgba(8,8,8,.4)">Skill Sets.</span></h2>
+      <div class="skg">
+        <div class="skb rv"><div class="ski">✦</div><div class="skn">DIGITAL MARKETING</div><div class="skd">End-to-end digital campaign management — social, e-commerce, paid media. Built for engagement and commercial outcomes, not just impressions.</div><div class="skps"><span class="skp">Social Strategy</span><span class="skp">Content Planning</span><span class="skp">Digital Ads</span><span class="skp">E-commerce</span><span class="skp">Affiliate Mktg</span><span class="skp">Analytics</span></div></div>
+        <div class="skb rv d1"><div class="ski">◈</div><div class="skn">KOL &amp; INFLUENCER</div><div class="skd">Identifying, negotiating, briefing, and managing KOL partnerships — product seeding, launch events, and sustained brand storytelling campaigns.</div><div class="skps"><span class="skp">KOL Sourcing</span><span class="skp">Product Seeding</span><span class="skp">Content Alignment</span><span class="skp">Contract Mgmt</span><span class="skp">TikTok / IG</span></div></div>
+        <div class="skb rv d2"><div class="ski">⬡</div><div class="skn">EXPERIENTIAL &amp; POP-UP</div><div class="skd">Conceptualizing and executing high-impact retail activations — venue negotiation to brand immersion, logistics, and in-event commercial optimization.</div><div class="skps"><span class="skp">Event Planning</span><span class="skp">Pop-up Execution</span><span class="skp">Landlord Coord.</span><span class="skp">CX Design</span><span class="skp">GWP Strategy</span></div></div>
+        <div class="skb rv d1"><div class="ski">◉</div><div class="skn">BRAND MANAGEMENT</div><div class="skd">Translating global brand DNA into locally relevant execution — maintaining consistency across digital, retail, and event touchpoints in five SEA markets.</div><div class="skps"><span class="skp">Brand Guidelines</span><span class="skp">VM</span><span class="skp">Brand Storytelling</span><span class="skp">Licensee Mgmt</span><span class="skp">Global Alignment</span></div></div>
+        <div class="skb rv d2"><div class="ski">⊛</div><div class="skn">COMMERCIAL STRATEGY</div><div class="skd">Connecting marketing to revenue outcomes — royalty targets, GWP-driven sales, conversion optimization, and data-informed campaign adjustments.</div><div class="skps"><span class="skp">ROI Tracking</span><span class="skp">Revenue Reports</span><span class="skp">CRO</span><span class="skp">Shoppable Content</span></div></div>
+        <div class="skb rv d3"><div class="ski">⟁</div><div class="skn">CROSS-MARKET EXEC.</div><div class="skd">Managing simultaneous campaigns across 5 diverse SEA markets — balancing regional consistency with local consumer nuances at every activation.</div><div class="skps"><span class="skp">Multi-market</span><span class="skp">Licensee Rel.</span><span class="skp">Agency Mgmt</span><span class="skp">Cross-team</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ MARKETS ═══ -->
+  <section id="markets">
+    <div class="wrap">
+      <p class="sl rv">Geographic Coverage</p>
+      <div class="mktg">
+        <div class="mktl rv">
+          <div class="mkti"><div class="mktn">THAILAND</div><div class="mktbw"><div class="mktb" style="width:100%"></div></div><div class="mktfl">🇹🇭</div></div>
+          <div class="mkti"><div class="mktn">INDONESIA</div><div class="mktbw"><div class="mktb" style="width:90%"></div></div><div class="mktfl">🇮🇩</div></div>
+          <div class="mkti"><div class="mktn">MALAYSIA</div><div class="mktbw"><div class="mktb" style="width:82%"></div></div><div class="mktfl">🇲🇾</div></div>
+          <div class="mkti"><div class="mktn">VIETNAM</div><div class="mktbw"><div class="mktb" style="width:75%"></div></div><div class="mktfl">🇻🇳</div></div>
+          <div class="mkti"><div class="mktn">SINGAPORE</div><div class="mktbw"><div class="mktb" style="width:60%"></div></div><div class="mktfl">🇸🇬</div></div>
+        </div>
+        <div class="mktt rv d2">
+          <h2 class="sh">SOUTHEAST<br/><span class="sit">Asia Focus.</span></h2>
+          <p>5 markets, 1 brand vision. Managing ELLE's presence across the full breadth of SEA — adapting global strategy to diverse consumer behaviors, retail landscapes, and media ecosystems.</p>
+          <p>Thailand's mall-centric retail, Indonesia's e-commerce-first consumers, Vietnam's rapidly digitizing market, Malaysia's premium event culture, Singapore's luxury-forward audience.</p>
+          <div class="mktst">5<br/>SEA<br/>MKTS</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer>
+    <div class="fi">
+      <div class="ft">
+        <div class="fn rv">CHIRAPUN<span>Mailiang</span></div>
+        <div class="flinks rv d2">
+          <a href="#">Lagardere Active Enterprises (Asia Pacific)</a>
+          <a href="#">Brand &amp; Digital Marketing · SEA Region</a>
+          <a href="#">Staff No. 014 · Joined 25 May 2020</a>
+          <a href="#" style="color:rgba(8,8,8,.75)">ELLE Brand · Asst. Marketing Manager SEA</a>
+        </div>
+      </div>
+      <div class="fb">
+        <span class="fc">© 2025 Chirapun Mailiang · All Rights Reserved</span>
+        <span class="fbd">ELLE SEA</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JAVASCRIPT -->
+  <script>
+    /* CURSOR */
+    const cur=document.getElementById('cur'),curt=document.getElementById('curt');
+    let mx=0,my=0,tx=0,ty=0;
+    document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+    (function lp(){tx+=(mx-tx)*.13;ty+=(my-ty)*.13;curt.style.left=tx+'px';curt.style.top=ty+'px';requestAnimationFrame(lp);})();
+    document.querySelectorAll('a,button,.cc,.skb,.mb,.tr,.hbg').forEach(el=>{
+      el.addEventListener('mouseenter',()=>document.body.classList.add('hov'));
+      el.addEventListener('mouseleave',()=>document.body.classList.remove('hov'));
+    });
+
+    /* SCROLL */
+    window.addEventListener('scroll',()=>{
+      document.getElementById('prog').style.width=(window.scrollY/(document.body.scrollHeight-window.innerHeight)*100)+'%';
+      document.getElementById('nav').classList.toggle('sc',window.scrollY>60);
+    });
+
+    /* MOBILE NAV */
+    function toggleNav(){document.getElementById('nv').classList.toggle('open');}
+    document.getElementById('nv').addEventListener('click',e=>{if(e.target.tagName==='A')document.getElementById('nv').classList.remove('open');});
+
+    /* BUILD MARQUEES */
+    function buildMQ(id,items){
+      const w=document.getElementById(id);
+      [...items,...items,...items,...items].forEach(t=>{
+        const s=document.createElement('span');
+        s.className='mqi';
+        s.innerHTML=t+'<span class="mqd"></span>';
+        w.appendChild(s);
+      });
+    }
+    buildMQ('mq1',['BRAND MARKETING','KOL STRATEGY','SEA REGION','ELLE BRAND','POP-UP ACTIVATION','DIGITAL CAMPAIGNS','SOCIAL MEDIA','VISUAL MERCHANDISING','5 MARKETS']);
+    buildMQ('mq2',['THAILAND','INDONESIA','MALAYSIA','VIETNAM','SINGAPORE','E-COMMERCE','GWP STRATEGY','INFLUENCER MARKETING','COMMERCIAL GROWTH']);
+
+    /* REVEAL */
+    const ro=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');}),{threshold:.1});
+    document.querySelectorAll('.rv').forEach(el=>ro.observe(el));
+
+    /* COUNTER */
+    function cnt(el,t,dur=1800){
+      let s;
+      (function step(ts){
+        if(!s)s=ts;
+        const p=Math.min((ts-s)/dur,1);
+        el.textContent=Math.round((1-Math.pow(2,-10*p))*t);
+        if(p<1)requestAnimationFrame(step);
+      })(performance.now());
+    }
+    window.addEventListener('load',()=>{setTimeout(()=>{document.querySelectorAll('.c').forEach(el=>cnt(el,+el.dataset.t,2000));},1000);});
+    const co=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.querySelectorAll('.c2').forEach(el=>{if(!el.dataset.done){el.dataset.done=1;cnt(el,+el.dataset.t,1600);}});}),{threshold:.4});
+    document.querySelectorAll('#metrics').forEach(el=>co.observe(el));
+
+    /* MARKET BARS */
+    const mo=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.querySelectorAll('.mktb').forEach((b,i)=>setTimeout(()=>b.classList.add('go'),i*120));}),{threshold:.3});
+    document.querySelectorAll('.mktl').forEach(el=>mo.observe(el));
+
+    /* CARD LIGHT */
+    document.querySelectorAll('.cc').forEach(c=>{
+      c.addEventListener('mousemove',e=>{
+        const r=c.getBoundingClientRect(),x=((e.clientX-r.left)/r.width)*100,y=((e.clientY-r.top)/r.height)*100;
+        if(!c.classList.contains('lm'))c.style.background=`radial-gradient(circle at ${x}% ${y}%, #222, var(--gray) 70%)`;
+      });
+      c.addEventListener('mouseleave',()=>{c.style.background='';});
+    });
+  </script>
+</body>
+</html>
